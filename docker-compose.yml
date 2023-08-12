@@ -1,0 +1,19 @@
+﻿version: "3"
+
+services:
+  db:
+    container_name: db_mssql
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      - MSSQL_SA_PASSWORD=P@ssw0rd
+      - ACCEPT_EULA=Y
+    ports:
+      - "5111:1433"
+#  api:
+#    container_name: server_api
+#    build:
+#      context: .
+#      dockerfile: Terk.API/Dockerfile
+#    depends_on: 
+#      - db

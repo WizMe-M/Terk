@@ -503,3 +503,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+### Special ignore
+# whole .idea folder
+.idea/
