@@ -5,8 +5,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Terk.API/Terk.API.csproj", "Terk.API/"]
+
+ADD ["Terk.DB/Terk.DB.csproj", "Terk.DB/"]
+ADD ["Terk.API/Terk.API.csproj", "Terk.API/"]
 RUN dotnet restore "Terk.API/Terk.API.csproj"
+
 COPY . .
 WORKDIR "/src/Terk.API"
 RUN dotnet build "Terk.API.csproj" -c Release -o /app/build

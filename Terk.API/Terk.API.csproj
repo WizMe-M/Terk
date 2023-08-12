@@ -29,4 +29,9 @@
       <ProjectReference Include="..\Terk.DB\Terk.DB.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="PostBodies\" />
+      <Folder Include="Responses\" />
+    </ItemGroup>
+
 </Project>

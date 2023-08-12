@@ -1,4 +1,4 @@
-﻿version: "3"
+﻿version: '3'
 
 services:
   db:
@@ -9,11 +9,17 @@ services:
       - MSSQL_SA_PASSWORD=P@ssw0rd
       - ACCEPT_EULA=Y
     ports:
-      - "5111:1433"
-#  api:
-#    container_name: server_api
-#    build:
-#      context: .
-#      dockerfile: Terk.API/Dockerfile
-#    depends_on: 
-#      - db
+      - '5111:1433'
+
+  api:
+    container_name: server_api
+    build:
+      context: .
+      dockerfile: Terk.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - CONNECTIONSTRINGS__DEFAULT=Data Source=db,1433; Initial Catalog=terk; User Id=SA; Password=P@ssw0rd; TrustServerCertificate=true;
+    ports:
+      - '4444:80'
+    depends_on:
+      - db
