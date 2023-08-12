@@ -7,36 +7,53 @@ go
 
 create table dbo.product
 (
-    id   int          not null identity primary key,
-    name nvarchar(30) not null unique,
-    cost float        not null check (cost > 0),
+    id   int          not null identity,
+    name nvarchar(30) not null,
+    cost float        not null,
+
+    constraint pk_product primary key (id),
+    constraint uq_product_name unique (name),
+    constraint ch_product_cost check (cost > 0),
 );
 go
 
 create table dbo.[user]
 (
-    id    int          not null identity primary key,
+    id    int          not null identity,
     name  nvarchar(12) not null,
-    login varchar(20)  not null unique,
+    login varchar(20)  not null,
+
+    constraint pk_user primary key (id),
+    constraint uq_user_login unique (login),
 );
 go
 
 create table dbo.[order]
 (
-    id           int identity primary key,
-    customer_id  int       not null references [user] (id),
-    created_date datetime2 not null default getdate(),
-    total_cost   money     not null check (total_cost > 0),
+    id           int identity,
+    customer_id  int       not null,
+    created_date datetime2 not null
+        constraint df_order_created_date default getdate(),
+    total_cost   money     not null,
+
+    constraint pk_order primary key (id),
+    constraint ch_order_total_cost check (total_cost > 0),
+    constraint fk_order_customer foreign key (customer_id) references [user] (id),
 );
 go
 
 create table dbo.order_position
 (
-    id            int identity primary key,
-    order_id      int     not null references [order] (id),
-    product_id    int     not null references product (id),
+    id            int identity,
+    order_id      int     not null,
+    product_id    int     not null,
     product_count tinyint not null,
-    position_cost money   not null check (position_cost > 0),
+    cost          money   not null,
+
+    constraint pk_order_position primary key (id),
+    constraint ch_order_position_cost check (cost > 0),
+    constraint fk_order_position_order foreign key (order_id) references [order] (id),
+    constraint fk_order_position_product foreign key (product_id) references product (id),
 );
 go
 
