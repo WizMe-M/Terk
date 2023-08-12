@@ -3,8 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terk.DesktopClient", "Terk.DesktopClient\Terk.DesktopClient.csproj", "{1FB6BE12-82F9-411F-BCD1-1280A5A36709}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{E279803A-D0C3-444B-8D6D-0467831AD64E}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terk.API", "Terk.API\Terk.API.csproj", "{0CC9C9F6-00EA-4158-9769-16A40CD77332}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terk.DB", "Terk.DB\Terk.DB.csproj", "{31A8C662-5AB2-49F2-B9F8-997003ECDF0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,5 +25,9 @@ Global
 		{0CC9C9F6-00EA-4158-9769-16A40CD77332}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CC9C9F6-00EA-4158-9769-16A40CD77332}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CC9C9F6-00EA-4158-9769-16A40CD77332}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A8C662-5AB2-49F2-B9F8-997003ECDF0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A8C662-5AB2-49F2-B9F8-997003ECDF0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A8C662-5AB2-49F2-B9F8-997003ECDF0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A8C662-5AB2-49F2-B9F8-997003ECDF0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
