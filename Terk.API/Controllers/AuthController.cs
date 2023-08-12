@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Terk.API.Abstractions;
+using Terk.API.Responses;
 using Terk.DB.Context;
 
 namespace Terk.API.Controllers;
@@ -20,7 +21,7 @@ public class AuthController : DbController
     /// Attempts user's signing in with 
     /// </summary>
     /// <param name="login">User's login string</param>
-    /// <returns>Ok response with authenticated user either <see cref="StatusCodes.Status401Unauthorized"/>
+    /// <returns>Ok response with <see cref="AuthResponse"/> either <see cref="StatusCodes.Status401Unauthorized"/>
     /// if user with user with such login doesn't exist</returns>
     [AllowAnonymous]
     [HttpPost]
@@ -30,7 +31,7 @@ public class AuthController : DbController
         if (user is { })
         {
             _logger.LogInformation("Auth attempt succeeded with: login={Login}", login);
-            return Ok(user);
+            return Ok(new AuthResponse(user.Id, user.Name));
         }
 
         _logger.LogWarning("Auth attempt failed with: login={Login}", login);
