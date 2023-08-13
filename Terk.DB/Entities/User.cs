@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-namespace Terk.DB.Entities;
+﻿namespace Terk.DB.Entities;
 
 [Table("user")]
 [Index("Login", Name = "uq_user_login", IsUnique = true)]

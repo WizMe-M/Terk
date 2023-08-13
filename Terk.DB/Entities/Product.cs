@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
-namespace Terk.DB.Entities;
+﻿namespace Terk.DB.Entities;
 
 [Table("product")]
 [Index("Name", Name = "uq_product_name", IsUnique = true)]

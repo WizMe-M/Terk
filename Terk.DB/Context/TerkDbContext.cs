@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Terk.DB.Entities;
-
-namespace Terk.DB.Context;
+﻿namespace Terk.DB.Context;
 
 public partial class TerkDbContext : DbContext
 {

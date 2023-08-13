@@ -1,8 +1,4 @@
-﻿using Avalonia;
-using Avalonia.ReactiveUI;
-using System;
-
-namespace Terk.DesktopClient;
+﻿namespace Terk.DesktopClient;
 
 class Program
 {

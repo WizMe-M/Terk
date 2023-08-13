@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Terk.DB.Context;
-
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("Default");

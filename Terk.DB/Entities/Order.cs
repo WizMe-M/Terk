@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Terk.DB.Entities;
+﻿namespace Terk.DB.Entities;
 
 [Table("order")]
 public partial class Order

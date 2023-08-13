@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Terk.API.Abstractions;
-using Terk.API.Responses;
-using Terk.DB.Context;
-
-namespace Terk.API.Controllers;
+﻿namespace Terk.API.Controllers;
 
 [Route("[controller]/[action]")]
 public class AuthController : DbController
