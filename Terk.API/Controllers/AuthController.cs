@@ -1,6 +1,6 @@
 ﻿namespace Terk.API.Controllers;
 
-[Route("[controller]/[action]")]
+[Route("api/auth")]
 public class AuthController : DbController
 {
     private readonly ILogger<AuthController> _logger;
