@@ -4,10 +4,13 @@
 public class AuthController : DbController
 {
     private readonly ILogger<AuthController> _logger;
+    private readonly JwtConfig _jwtConfig;
 
-    public AuthController(ILogger<AuthController> logger, TerkDbContext context) : base(context)
+    public AuthController(ILogger<AuthController> logger, IOptions<JwtConfig> jwtConfigOptions, TerkDbContext context) :
+        base(context)
     {
         _logger = logger;
+        _jwtConfig = jwtConfigOptions.Value;
     }
 
     /// <summary>
@@ -24,10 +27,29 @@ public class AuthController : DbController
         if (user is { })
         {
             _logger.LogInformation("Auth attempt succeeded with: login={Login}", login);
-            return Ok(new AuthResponse(user.Id, user.Name));
+            var jwtToken = CreateJwtToken(user);
+            return Ok(new AuthResponse(user.Id, jwtToken));
         }
 
         _logger.LogWarning("Auth attempt failed with: login={Login}", login);
         return Problem("User with such login doesn't exist", statusCode: StatusCodes.Status401Unauthorized);
+    }
+
+    private string CreateJwtToken(User user)
+    {
+        var now = DateTime.UtcNow;
+
+        var jwt = new JwtSecurityToken(
+            issuer: _jwtConfig.Issuer,
+            notBefore: now,
+            claims: new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Login),
+            },
+            expires: now.Add(TimeSpan.FromHours(12)),
+            signingCredentials: new SigningCredentials(_jwtConfig.SecretKey, SecurityAlgorithms.HmacSha256));
+
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
     }
 }

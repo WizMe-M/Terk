@@ -1,3 +1,3 @@
 ﻿namespace Terk.API.Responses;
 
-public record AuthResponse(int Id, string Name);
+public record AuthResponse(int Id, string JwtToken);
