@@ -30,7 +30,4 @@
       <ProjectReference Include="..\Terk.ApiDto\Terk.ApiDto.csproj" />
       <ProjectReference Include="..\Terk.DB\Terk.DB.csproj" />
     </ItemGroup>
-
-
-
 </Project>

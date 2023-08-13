@@ -12,6 +12,7 @@ global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.OpenApi.Models;
 global using Terk.API.Abstractions;
 global using Terk.API.Config;
+global using Terk.API.Extensions;
 global using Terk.API.Responses;
 global using Terk.DB.Context;
 global using Terk.DB.Entities;
