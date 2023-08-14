@@ -4,14 +4,17 @@ public partial class LoginViewModel : ViewModelBase
 {
     private readonly ApiRequester _apiRequester;
 
-    [ObservableProperty] private string _login = "";
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SignInCommand))]
+    private string _login = "";
 
     public LoginViewModel(ApiRequester apiRequester)
     {
         _apiRequester = apiRequester;
     }
 
-    [RelayCommand]
+    public bool CanSignIn => !string.IsNullOrWhiteSpace(Login);
+
+    [RelayCommand(CanExecute = nameof(CanSignIn))]
     private async Task SignIn()
     {
         var successfulSignIn = await _apiRequester.SignIn(Login);
