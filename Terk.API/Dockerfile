@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 ADD ["Terk.DB/Terk.DB.csproj", "Terk.DB/"]
+ADD ["Terk.API.Contracts/Terk.API.Contracts.csproj", "Terk.API.Contracts/"]
 ADD ["Terk.API/Terk.API.csproj", "Terk.API/"]
 RUN dotnet restore "Terk.API/Terk.API.csproj"
 
