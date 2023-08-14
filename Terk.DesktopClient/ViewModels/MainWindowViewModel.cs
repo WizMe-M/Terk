@@ -2,10 +2,17 @@
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    [ObservableProperty] private ViewModelBase _currentViewModel;
+    [ObservableProperty] private LoginViewModel _loginVm;
+    [ObservableProperty] private ViewModelBase? _currentVm;
 
-    public MainWindowViewModel(ViewModelBase loginViewModel)
+    public MainWindowViewModel(LoginViewModel loginVm)
     {
-        _currentViewModel = loginViewModel;
+        _loginVm = loginVm;
+        _loginVm.SignedIn += OnSignedIn;
+    }
+
+    private void OnSignedIn(object? sender, SignInEventArgs e)
+    {
+        Console.WriteLine("sign in");
     }
 }

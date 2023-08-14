@@ -2,10 +2,14 @@
 
 public partial class LoginViewModel : ViewModelBase
 {
+    public event EventHandler<SignInEventArgs>? SignedIn; 
+    
     private readonly ApiRequester _apiRequester;
 
     [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SignInCommand))]
     private string _login = "";
+
+    [ObservableProperty] private bool _isSignedIn;
 
     public LoginViewModel(ApiRequester apiRequester)
     {
@@ -17,6 +21,7 @@ public partial class LoginViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanSignIn))]
     private async Task SignIn()
     {
-        var successfulSignIn = await _apiRequester.SignIn(Login);
+        var signedIn = await _apiRequester.SignIn(Login);
+        if (signedIn) SignedIn?.Invoke(this, new SignInEventArgs());
     }
 }
