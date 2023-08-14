@@ -1,0 +1,14 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:Terk.DesktopClient.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+             x:DataType="vm:ProfileViewModel" x:CompileBindings="True"
+             x:Class="Terk.DesktopClient.Views.ProfileView">
+    <StackPanel>
+        <Button DockPanel.Dock="Top" Content="Выйти из аккаунта"
+                Command="{Binding SignOutCommand}"
+                HorizontalAlignment="Center" Margin="10" />
+    </StackPanel>
+</UserControl>

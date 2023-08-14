@@ -10,7 +10,12 @@
         Icon="/Assets/avalonia-logo.ico" Title="Terk">
     <DockPanel>
         <Border DockPanel.Dock="Left" BorderThickness="0 0 1 0" BorderBrush="Black">
-            <ContentControl Width="300" Content="{Binding LoginVm}" />
+            <Grid Width="300">
+                <ContentControl Content="{Binding LoginVm}"
+                                IsVisible="{Binding !IsSignedIn}" />
+                <ContentControl Content="{Binding ProfileVm}"
+                                IsVisible="{Binding IsSignedIn}" />
+            </Grid>
         </Border>
 
         <vs:NotSignedInOrdersPage />

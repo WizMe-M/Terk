@@ -4,8 +4,8 @@ public class ViewModelModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.Register<MainWindowViewModel>(c => new MainWindowViewModel(c.Resolve<LoginViewModel>()))
-            .AsSelf().SingleInstance();
+        builder.RegisterType<MainWindowViewModel>().AsSelf().SingleInstance();
         builder.RegisterType<LoginViewModel>().AsSelf().InstancePerDependency();
+        builder.RegisterType<ProfileViewModel>().AsSelf().InstancePerDependency();
     }
 }
