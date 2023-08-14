@@ -1,4 +1,4 @@
-﻿using Product = Terk.API.Responses.Product;
+﻿using Product = Terk.API.Contracts.Responses.Product;
 
 namespace Terk.API.Controllers;
 

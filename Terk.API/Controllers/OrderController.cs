@@ -1,5 +1,5 @@
-﻿using Order = Terk.API.Responses.Order;
-using Product = Terk.API.Responses.Product;
+﻿using Order = Terk.API.Contracts.Responses.Order;
+using Product = Terk.API.Contracts.Responses.Product;
 
 namespace Terk.API.Controllers;
 

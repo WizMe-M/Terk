@@ -1,4 +1,4 @@
-﻿namespace Terk.API.Responses;
+﻿namespace Terk.API.Contracts.Responses;
 
 /// <summary>
 /// User's order
