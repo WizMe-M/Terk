@@ -1,5 +1,5 @@
 ﻿namespace Terk.DesktopClient.ViewModels;
 
-public class ViewModelBase : ReactiveObject
+public class ViewModelBase : ObservableObject
 {
 }

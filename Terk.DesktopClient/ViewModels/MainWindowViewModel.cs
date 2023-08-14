@@ -1,6 +1,11 @@
 ﻿namespace Terk.DesktopClient.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public partial class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting => "Welcome to Avalonia!";
+    [ObservableProperty] private ViewModelBase _currentViewModel;
+
+    public MainWindowViewModel(ViewModelBase loginViewModel)
+    {
+        _currentViewModel = loginViewModel;
+    }
 }

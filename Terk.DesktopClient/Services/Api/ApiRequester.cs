@@ -9,7 +9,7 @@ public class ApiRequester : IAuthorizingClient
     {
         _options = options;
         _httpClient = httpClient;
-        _httpClient.BaseAddress = new Uri("http://localhost:4444/api/");
+        _httpClient.BaseAddress = new Uri("http://localhost:4444/");
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
     }
 
@@ -17,4 +17,15 @@ public class ApiRequester : IAuthorizingClient
         new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token);
 
     public void ResetAuthorization() => _httpClient.DefaultRequestHeaders.Authorization = null;
+
+    public async Task<bool> SignIn(string login)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/auth", login, _options);
+        if (!response.IsSuccessStatusCode) return false;
+        
+        var (_, jwtToken) = (await response.Content.ReadFromJsonAsync<AuthResponse>())!;
+        SetAuthorization(jwtToken);
+        return true;
+
+    }
 }
