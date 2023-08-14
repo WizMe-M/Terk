@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terk.API", "Terk.API\Terk.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terk.DB", "Terk.DB\Terk.DB.csproj", "{31A8C662-5AB2-49F2-B9F8-997003ECDF0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terk.ApiDto", "Terk.ApiDto\Terk.ApiDto.csproj", "{5B44FDF0-4326-4568-9583-DF8325828FC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terk.API.Contracts", "Terk.API.Contracts\Terk.API.Contracts.csproj", "{5B44FDF0-4326-4568-9583-DF8325828FC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -29,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Terk.ApiDto\Terk.ApiDto.csproj" />
+      <ProjectReference Include="..\Terk.API.Contracts\Terk.API.Contracts.csproj" />
       <ProjectReference Include="..\Terk.DB\Terk.DB.csproj" />
     </ItemGroup>
 </Project>
