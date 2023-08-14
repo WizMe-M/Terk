@@ -1,6 +1,3 @@
-using Avalonia.Controls.Templates;
-using Terk.DesktopClient.ViewModels;
-
 namespace Terk.DesktopClient;
 
 public class ViewLocator : IDataTemplate

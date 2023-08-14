@@ -7,6 +7,12 @@ var jwtConfigSection = builder.Configuration.GetSection(JwtConfig.SectionName);
 builder.Services.Configure<JwtConfig>(jwtConfigSection);
 var jwtConfig = jwtConfigSection.Get<JwtConfig>()!;
 
+builder.Services.Configure<JsonOptions>(options =>
+{
+    var jso = Json.DefaultSerializerOptions();
+    options.JsonSerializerOptions.PropertyNamingPolicy = jso.PropertyNamingPolicy;
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

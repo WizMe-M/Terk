@@ -10,6 +10,7 @@ public class ApiRequester : IAuthorizingClient
         _options = options;
         _httpClient = httpClient;
         _httpClient.BaseAddress = new Uri("http://localhost:4444/api/");
+        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
     }
 
     public void SetAuthorization(string token) => _httpClient.DefaultRequestHeaders.Authorization =

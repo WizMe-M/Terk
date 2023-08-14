@@ -1,8 +1,3 @@
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
-using Terk.DesktopClient.ViewModels;
-using Terk.DesktopClient.Views;
-
 namespace Terk.DesktopClient;
 
 public partial class App : Application
@@ -14,6 +9,10 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        var services = new ServiceCollection().RegisterApiServices();
+        var di = new DI().Populate(services);
+        di.Build();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
