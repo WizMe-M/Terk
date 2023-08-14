@@ -1,17 +1,21 @@
 ﻿namespace Terk.DesktopClient.Services.DI;
 
-public class DI
+public static class DI
 {
     public static IContainer Container => _container!;
     private static IContainer? _container;
 
-    private readonly ContainerBuilder _builder = new();
-
-    public DI Populate(IServiceCollection services)
+    public static void BuildContainer()
     {
-        _builder.Populate(services);
-        return this;
+        var builder = new ContainerBuilder();
+        IncludeModules(builder);
+        _container = builder.Build();
     }
 
-    public void Build() => _container ??= _builder.Build();
+    private static void IncludeModules(ContainerBuilder builder)
+    {
+        builder
+            .RegisterModule<ApiModule>()
+            .RegisterModule<ViewModelModule>();
+    }
 }

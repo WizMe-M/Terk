@@ -9,15 +9,13 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        var services = new ServiceCollection().RegisterApiServices();
-        var di = new DI().Populate(services);
-        di.Build();
+        DI.BuildContainer();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = DI.Container.Resolve<MainWindowViewModel>(),
             };
         }
 
