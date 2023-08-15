@@ -8,11 +8,13 @@ public partial class PlaceNewOrderViewModel : ContentViewModel
     [ObservableProperty] private int _count = 1;
     [ObservableProperty] private decimal _totalSum;
     private readonly ApiRequester _apiRequester;
+    private readonly Lazy<MyOrdersViewModel> _myOrdersVm;
 
-    public PlaceNewOrderViewModel(ApiRequester apiRequester)
+    public PlaceNewOrderViewModel(ApiRequester apiRequester, Lazy<MyOrdersViewModel> myOrdersVm)
     {
         _apiRequester = apiRequester;
-        PositionsInOrder.CollectionChanged += RecalculateTotalSum;
+        _myOrdersVm = myOrdersVm;
+        PositionsInOrder.CollectionChanged += OnPositionsListChanged;
     }
 
     public ObservableCollection<Product> Products { get; } = new();
@@ -20,6 +22,8 @@ public partial class PlaceNewOrderViewModel : ContentViewModel
     public ObservableCollection<NewOrderPositionViewModel> PositionsInOrder { get; } = new();
 
     public bool IsProductSelected => SelectedProduct is { };
+    
+    public bool CanProcessOrder => PositionsInOrder.Count > 0;
 
     public override Task InitAsync() => UploadProducts();
 
@@ -44,8 +48,24 @@ public partial class PlaceNewOrderViewModel : ContentViewModel
         PositionsInOrder.Remove(position);
     }
 
-    private void RecalculateTotalSum(object? sender, NotifyCollectionChangedEventArgs e)
+    [RelayCommand(CanExecute = nameof(CanProcessOrder))]
+    private async Task ProcessOrder()
     {
+        var positions = PositionsInOrder
+            .Select(position => new NewOrderPosition(position.Product.Id, (byte)position.Count))
+            .ToArray();
+        var newOrder = new NewOrder(positions);
+        var isCreated = await _apiRequester.CreateOrderAsync(newOrder);
+        if (isCreated)
+        {
+            // TODO: maybe would be better to replace Lazy with some factory?
+            ChangeContent(_myOrdersVm.Value);
+        }
+    }
+    
+    private void OnPositionsListChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        ProcessOrderCommand.NotifyCanExecuteChanged();
         TotalSum = (decimal)PositionsInOrder.Select(position => position.TotalCost).Sum();
     }
 

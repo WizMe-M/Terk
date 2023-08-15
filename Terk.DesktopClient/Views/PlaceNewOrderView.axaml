@@ -40,7 +40,7 @@
             <DockPanel Dock="Bottom" Margin="0 20">
                 <TextBlock DockPanel.Dock="Left" FontWeight="Bold"
                            Text="{Binding TotalSum, StringFormat={}Итого: {0} руб.}" />
-                <Button Content="Оформить заказ"
+                <Button Content="Оформить заказ" Command="{Binding ProcessOrderCommand}"
                         HorizontalAlignment="Right" />
             </DockPanel>
 

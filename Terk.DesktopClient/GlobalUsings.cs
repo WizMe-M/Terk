@@ -21,6 +21,7 @@ global using CommunityToolkit.Mvvm.Input;
 global using DynamicData;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Terk.API.Contracts;
+global using Terk.API.Contracts.PostBodies;
 global using Terk.API.Contracts.Responses;
 global using Terk.DesktopClient.Events;
 global using Terk.DesktopClient.Services.Api;

@@ -39,4 +39,10 @@ public class ApiRequester : IAuthorizingClient
         var orders = await _httpClient.GetFromJsonAsync<Order[]>("api/orders/my", _options);
         return orders!;
     }
+
+    public async Task<bool> CreateOrderAsync(NewOrder newOrder)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/orders/new", newOrder);
+        return response.IsSuccessStatusCode;
+    }
 }
