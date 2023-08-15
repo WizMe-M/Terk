@@ -18,7 +18,7 @@ public class ApiRequester : IAuthorizingClient
 
     public void ResetAuthorization() => _httpClient.DefaultRequestHeaders.Authorization = null;
 
-    public async Task<bool> SignIn(string login)
+    public async Task<bool> SignInAsync(string login)
     {
         var response = await _httpClient.PostAsJsonAsync("api/auth", login, _options);
         if (!response.IsSuccessStatusCode) return false;
@@ -26,6 +26,11 @@ public class ApiRequester : IAuthorizingClient
         var (_, jwtToken) = (await response.Content.ReadFromJsonAsync<AuthResponse>())!;
         SetAuthorization(jwtToken);
         return true;
+    }
 
+    public async Task<Order[]> GetMyOrdersAsync()
+    {
+        var orders = await _httpClient.GetFromJsonAsync<Order[]>("api/orders/my");
+        return orders!;
     }
 }

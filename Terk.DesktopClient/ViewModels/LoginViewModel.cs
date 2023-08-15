@@ -21,7 +21,7 @@ public partial class LoginViewModel : SideBarViewModel
     [RelayCommand(CanExecute = nameof(CanSignIn))]
     private async Task SignIn()
     {
-        var signedIn = await _apiRequester.SignIn(Login);
+        var signedIn = await _apiRequester.SignInAsync(Login);
         if (signedIn)
         {
             Login = "";
