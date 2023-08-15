@@ -3,18 +3,17 @@
 public partial class MainWindowViewModel : ViewModelBase
 {
     [ObservableProperty] private SideBarViewModel _sideBarVm;
-    [ObservableProperty] private MainContentViewModel? _mainContentVm;
+    [ObservableProperty] private MainContentViewModel _mainContentVm;
     [ObservableProperty] private bool _isSignedIn;
 
     private readonly LoginViewModel _loginVm;
     private readonly ProfileViewModel _profileVm;
-    private readonly MyOrdersViewModel _myOrdersVm;
 
-    public MainWindowViewModel(LoginViewModel loginVm, ProfileViewModel profileVm, MyOrdersViewModel myOrdersVm)
+    public MainWindowViewModel(LoginViewModel loginVm, ProfileViewModel profileVm, MainContentViewModel mainContentVm)
     {
         _loginVm = loginVm;
         _profileVm = profileVm;
-        _myOrdersVm = myOrdersVm;
+        _mainContentVm = mainContentVm;
 
         _sideBarVm = _loginVm;
         _loginVm.SignedIn += OnSignedIn;
@@ -25,14 +24,13 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         IsSignedIn = true;
         SideBarVm = _profileVm;
-        MainContentVm = _myOrdersVm;
-        Task.Run(_myOrdersVm.UploadOrders);
+        MainContentVm.CurrentContentVm.InitAsync();
     }
 
     private void OnSignedOut(object? sender, LogOutEventArgs e)
     {
         IsSignedIn = false;
         SideBarVm = _loginVm;
-        MainContentVm = null;
+        MainContentVm.ResetContent();
     }
 }

@@ -1,21 +1,27 @@
 ﻿namespace Terk.DesktopClient.ViewModels;
 
-public class MyOrdersViewModel : MainContentViewModel
+public partial class MyOrdersViewModel : ContentViewModel
 {
     private readonly ApiRequester _apiRequester;
+    private readonly PlaceNewOrderViewModel _placeNewOrderVm;
 
-    public MyOrdersViewModel(ApiRequester apiRequester)
+    public MyOrdersViewModel(ApiRequester apiRequester, PlaceNewOrderViewModel placeNewOrderVm)
     {
         _apiRequester = apiRequester;
+        _placeNewOrderVm = placeNewOrderVm;
     }
 
     public ObservableCollection<Order> Orders { get; } = new();
 
-    public async Task UploadOrders()
+    public override Task InitAsync() => UploadOrders();
+
+    private async Task UploadOrders()
     {
         var orders = await _apiRequester.GetMyOrdersAsync();
         Orders.Clear();
         Orders.AddRange(orders);
     }
-    // TODO: переход на страницу с оформлением нового заказа
+
+    [RelayCommand]
+    private void OpenNewOrder() => ChangeContent(_placeNewOrderVm);
 }

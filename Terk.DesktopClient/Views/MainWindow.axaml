@@ -15,7 +15,7 @@
 
         <Panel>
             <vs:NotSignedInOrdersPage IsVisible="{Binding !IsSignedIn}" />
-            <ContentControl Content="{Binding MainContentVm}"
+            <ContentControl Content="{Binding MainContentVm.CurrentContentVm}"
                             IsVisible="{Binding IsSignedIn}" />
         </Panel>
     </DockPanel>
