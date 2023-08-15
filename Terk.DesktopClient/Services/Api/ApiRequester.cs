@@ -28,9 +28,15 @@ public class ApiRequester : IAuthorizingClient
         return true;
     }
 
+    public async Task<Product[]> GetProducts()
+    {
+        var products = await _httpClient.GetFromJsonAsync<Product[]>("api/products", _options);
+        return products!;
+    }
+    
     public async Task<Order[]> GetMyOrdersAsync()
     {
-        var orders = await _httpClient.GetFromJsonAsync<Order[]>("api/orders/my");
+        var orders = await _httpClient.GetFromJsonAsync<Order[]>("api/orders/my", _options);
         return orders!;
     }
 }

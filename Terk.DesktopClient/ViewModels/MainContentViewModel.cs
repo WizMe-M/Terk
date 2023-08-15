@@ -17,6 +17,7 @@ public partial class MainContentViewModel : ViewModelBase
         CurrentContentVm.ContentChanged -= OnContentChanged;
         CurrentContentVm = _defaultContentVm;
         CurrentContentVm.ContentChanged += OnContentChanged;
+        CurrentContentVm.InitAsync();
     }
 
     private void OnContentChanged(object? sender, MainContentChangedEventArgs e)
@@ -24,5 +25,6 @@ public partial class MainContentViewModel : ViewModelBase
         CurrentContentVm.ContentChanged -= OnContentChanged;
         CurrentContentVm = e.NewViewModel;
         CurrentContentVm.ContentChanged += OnContentChanged;
+        CurrentContentVm.InitAsync();
     }
 }

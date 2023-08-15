@@ -2,6 +2,81 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Terk.DesktopClient.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:PlaceNewOrderViewModel" x:CompileBindings="True"
              x:Class="Terk.DesktopClient.Views.PlaceNewOrderView">
+    <UniformGrid Columns="2" Rows="1">
+        <!-- Left half - adding position -->
+        <DockPanel>
+            <DockPanel Dock="Top" Margin="5 10">
+                <NumericUpDown DockPanel.Dock="Left" Minimum="1" Value="{Binding Count}"
+                               ClipValueToMinMax="True" Watermark="Кол-во" Width="130" />
+                <Button Content="Добавить в заказ" Command="{Binding AddPositionCommand}"
+                        HorizontalAlignment="Right" />
+            </DockPanel>
+
+            <ListBox Items="{Binding Products}"
+                     SelectedItem="{Binding SelectedProduct}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="0.5" Margin="10">
+                            <DockPanel Margin="20 10">
+                                <TextBlock DockPanel.Dock="Left" FontSize="16"
+                                           Text="{Binding Id, StringFormat={}ID: {0}}" />
+                                <TextBlock DockPanel.Dock="Right" FontSize="16" FontWeight="DemiBold"
+                                           Text="{Binding Cost, StringFormat={}{0} руб.}" />
+                                <TextBlock Text="{Binding Name}" FontWeight="DemiBold"
+                                           FontSize="16" Margin="25 0" />
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <!-- Right half - overview order positions -->
+        <DockPanel Margin="20">
+            <DockPanel Dock="Bottom" Margin="0 20">
+                <TextBlock DockPanel.Dock="Left" FontWeight="Bold"
+                           Text="{Binding TotalSum, StringFormat={}Итого: {0} руб.}" />
+                <Button Content="Оформить заказ"
+                        HorizontalAlignment="Right" />
+            </DockPanel>
+
+            <Panel>
+                <TextBlock Text="Нет позиций в заказе" IsVisible="{Binding !PositionsInOrder.Count}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <ItemsControl Items="{Binding PositionsInOrder}"
+                              IsVisible="{Binding !!PositionsInOrder.Count}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Content="Удалить"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, 
+                                        Path=((vm:PlaceNewOrderViewModel)DataContext).RemovePositionCommand,
+                                        FallbackValue=''}"
+                                        CommandParameter="{Binding}" />
+
+                                <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="0.5" Margin="5">
+                                    <DockPanel Margin="5">
+                                        <TextBlock DockPanel.Dock="Bottom" FontSize="16" FontWeight="DemiBold"
+                                                   Text="{Binding TotalCost, StringFormat={}Итого: {0} руб.}"
+                                                   HorizontalAlignment="Right" Margin="10" />
+                                        <TextBlock DockPanel.Dock="Left" FontSize="16" FontWeight="DemiBold"
+                                                   Text="{Binding Name}" Margin="5 0 10 0" />
+                                        <TextBlock DockPanel.Dock="Left" FontSize="16"
+                                                   Text="{Binding Count, StringFormat={}{0} шт.}"
+                                                   Margin="10 0" />
+                                        <TextBlock FontSize="16" Text="{Binding Cost, StringFormat={}(по {0} руб.)}" />
+                                    </DockPanel>
+                                </Border>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Panel>
+        </DockPanel>
+    </UniformGrid>
+
 </UserControl>
