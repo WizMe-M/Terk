@@ -8,13 +8,15 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private readonly LoginViewModel _loginVm;
     private readonly ProfileViewModel _profileVm;
+    private readonly MyOrdersViewModel _myOrdersVm;
 
-    public MainWindowViewModel(LoginViewModel loginVm, ProfileViewModel profileVm)
+    public MainWindowViewModel(LoginViewModel loginVm, ProfileViewModel profileVm, MyOrdersViewModel myOrdersVm)
     {
         _loginVm = loginVm;
         _profileVm = profileVm;
-        _sideBarVm = _loginVm;
+        _myOrdersVm = myOrdersVm;
 
+        _sideBarVm = _loginVm;
         _loginVm.SignedIn += OnSignedIn;
         _profileVm.SignedOut += OnSignedOut;
     }
@@ -23,11 +25,14 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         IsSignedIn = true;
         SideBarVm = _profileVm;
+        MainContentVm = _myOrdersVm;
+        Task.Run(_myOrdersVm.UploadOrders);
     }
 
     private void OnSignedOut(object? sender, LogOutEventArgs e)
     {
         IsSignedIn = false;
         SideBarVm = _loginVm;
+        MainContentVm = null;
     }
 }

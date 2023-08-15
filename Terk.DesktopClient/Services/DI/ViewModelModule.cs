@@ -7,5 +7,6 @@ public class ViewModelModule : Module
         builder.RegisterType<MainWindowViewModel>().AsSelf().SingleInstance();
         builder.RegisterType<LoginViewModel>().AsSelf().InstancePerDependency();
         builder.RegisterType<ProfileViewModel>().AsSelf().InstancePerDependency();
+        builder.RegisterType<MyOrdersViewModel>().AsSelf().InstancePerDependency();
     }
 }

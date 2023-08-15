@@ -1,0 +1,35 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Terk.DesktopClient.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:MyOrdersViewModel" x:CompileBindings="True"
+             x:Class="Terk.DesktopClient.Views.MyOrdersView">
+    <DockPanel>
+        <DockPanel Dock="Top" Margin="10 20 10 10">
+            <Button DockPanel.Dock="Right" Content="Новый заказ" Padding="25 8" />
+            <TextBlock Text="Мои заказы" FontSize="21" HorizontalAlignment="Center" />
+        </DockPanel>
+        <Panel>
+            <TextBlock Text="Список заказов пуст!" IsVisible="{Binding !Orders.Count}" 
+                       FontSize="18" FontWeight="Thin" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <ItemsControl Items="{Binding Orders}" IsVisible="{Binding !!Orders.Count}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="8" BorderBrush="Gray" BorderThickness="0.5" Margin="10">
+                            <DockPanel Margin="20 10">
+                                <TextBlock DockPanel.Dock="Left" FontSize="16"
+                                           Text="{Binding Id, StringFormat={}ID: {0}}" />
+                                <TextBlock DockPanel.Dock="Right" FontSize="16"
+                                           Text="{Binding TotalCost, StringFormat={}Итого: {0}}" />
+                                <TextBlock Text="{Binding CreatedDate, StringFormat={}Дата оформления: {0:f}}"
+                                           FontSize="16" Margin="25 0" />
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Panel>
+    </DockPanel>
+</UserControl>
