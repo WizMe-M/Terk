@@ -1,6 +1,6 @@
 ﻿namespace Terk.DesktopClient.ViewModels;
 
-public partial class ProfileViewModel : ViewModelBase
+public partial class ProfileViewModel : SideBarViewModel
 {
     public event EventHandler<LogOutEventArgs>? SignedOut;
     private readonly ApiRequester _apiRequester;

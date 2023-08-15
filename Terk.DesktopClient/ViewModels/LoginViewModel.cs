@@ -1,6 +1,6 @@
 ﻿namespace Terk.DesktopClient.ViewModels;
 
-public partial class LoginViewModel : ViewModelBase
+public partial class LoginViewModel : SideBarViewModel
 {
     public event EventHandler<SignInEventArgs>? SignedIn;
 

@@ -1,4 +1,4 @@
-﻿namespace Terk.DesktopClient.ViewModels;
+﻿namespace Terk.DesktopClient.ViewModels.Base;
 
 public class ViewModelBase : ObservableObject
 {
