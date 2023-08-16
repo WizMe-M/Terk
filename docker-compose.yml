@@ -19,6 +19,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - CONNECTIONSTRINGS__DEFAULT=Data Source=db,1433; Initial Catalog=terk; User Id=SA; Password=P@ssw0rd; TrustServerCertificate=true;
+    volumes:
+      - ${APPDATA}/Terk/wwwroot:/app/wwwroot/
     ports:
       - '4444:80'
     depends_on:

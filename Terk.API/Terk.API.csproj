@@ -30,4 +30,17 @@
       <ProjectReference Include="..\Terk.API.Contracts\Terk.API.Contracts.csproj" />
       <ProjectReference Include="..\Terk.DB\Terk.DB.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="files\" />
+      <Folder Include="wwwroot\files\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="files\9e9d0ad8-0d43-4851-94bb-2125a03fa98b.txt" />
+      <None Remove="files\9108bf08-693b-452a-9f91-fbc42a1717c1.txt" />
+      <None Remove="files\8636a3bd-6281-4c64-8802-354e818514e8.txt" />
+      <None Remove="files\82db94f2-7467-45a2-a6c6-d4ab9967b433.txt" />
+      <None Remove="files\1b07f8e3-ac2c-4508-ab98-ca0aa1739e23.txt" />
+    </ItemGroup>
 </Project>

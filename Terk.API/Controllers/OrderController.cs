@@ -1,7 +1,7 @@
-﻿using Terk.API.Contracts.PostBodies;
-using Order = Terk.API.Contracts.Responses.Order;
+﻿using Order = Terk.API.Contracts.Responses.Order;
 using Position = Terk.API.Contracts.Responses.Position;
 using Product = Terk.API.Contracts.Responses.Product;
+using IoFile = System.IO.File;
 
 namespace Terk.API.Controllers;
 
@@ -9,10 +9,13 @@ namespace Terk.API.Controllers;
 public class OrderController : DbController
 {
     private readonly ILogger<OrderController> _logger;
+    private readonly IWebHostEnvironment _environment;
 
-    public OrderController(TerkDbContext context, ILogger<OrderController> logger) : base(context)
+    public OrderController(TerkDbContext context, ILogger<OrderController> logger, IWebHostEnvironment environment) :
+        base(context)
     {
         _logger = logger;
+        _environment = environment;
     }
 
     /// <summary>
@@ -50,6 +53,68 @@ public class OrderController : DbController
             .ToArrayAsync();
         _logger.LogInformation("User (id={Id}) requested his orders (count={Count})", id, orders.Length);
         return Ok(orders);
+    }
+
+    [HttpGet("my/file")]
+    public async Task<IActionResult> DownloadMyOrders([FromHeader] string authorization)
+    {
+        var id = authorization.ExtractId();
+        if (id is null)
+        {
+            _logger.LogWarning("Unable to extract id from JWT: {Jwt}", authorization);
+            return Problem("Incorrect authorization token", statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        var user = Context.Users
+            .Include(u => u.Orders)
+            .ThenInclude(order => order.OrderPositions)
+            .ThenInclude(position => position.Product)
+            .FirstOrDefault(u => u.Id == id);
+
+        if (user is null)
+        {
+            _logger.LogWarning("User with ID in jwi: {Id}", id);
+            return Problem("User not found", statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        const string fileFolder = "files";
+        var filesRootPath = Path.Join(_environment.WebRootPath, fileFolder);
+        if (!Path.Exists(filesRootPath)) Directory.CreateDirectory(filesRootPath);
+
+        var serverFileName = $"{Guid.NewGuid().ToString()}.txt";
+        var serverFilePath = Path.Join(filesRootPath, serverFileName);
+        var clientFileName = $"{user.Login} {DateTime.Now}.txt";
+
+        var orders = user.Orders.OrderByDescending(order => order.CreatedDate).ToArray();
+
+        var stringBuilder = new StringBuilder();
+        stringBuilder.AppendLine($"Заказы пользователя \"{user.Name}\":");
+        foreach (var order in orders)
+        {
+            stringBuilder.AppendLine($"Заказ от {order.CreatedDate} на {order.TotalCost} руб.");
+            foreach (var position in order.OrderPositions)
+            {
+                stringBuilder.AppendLine(
+                    $"- {position.ProductCount} шт. {position.Product.Name} ({position.Product.Cost} руб.) - Итого: {position.Cost} руб."
+                );
+            }
+
+            stringBuilder.AppendLine();
+        }
+
+        var fileContent = stringBuilder.ToString();
+        await IoFile.WriteAllTextAsync(serverFilePath, fileContent);
+
+        _logger.LogInformation("""
+                               Requested user's orders file;
+                               File on server ({ServerFile}) for user ({UserLogin});
+                               Count of orders: {OrderCount};
+                               File name for client: "{ClientFile}".
+                               """,
+            serverFileName, user.Login, orders.Length, clientFileName
+        );
+
+        return PhysicalFile(serverFilePath, MediaTypeNames.Text.Plain, clientFileName);
     }
 
     /// <summary>
