@@ -1,7 +1,7 @@
 ﻿namespace Terk.API.Contracts.PostBodies;
 
 /// <summary>
-/// New order created by user
+/// New order to create
 /// </summary>
 /// <param name="Positions">Positions of new order</param>
 public record NewOrder(NewOrderPosition[] Positions);

@@ -1,5 +1,8 @@
 ﻿namespace Terk.DesktopClient.Services.DI;
 
+/// <summary>
+/// Module that registers ViewModels for Views
+/// </summary>
 public class ViewModelModule : Module
 {
     protected override void Load(ContainerBuilder builder)

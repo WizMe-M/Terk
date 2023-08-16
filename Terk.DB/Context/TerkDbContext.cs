@@ -1,23 +1,25 @@
 ﻿namespace Terk.DB.Context;
 
+/// <summary>
+/// Context to interact with Terk's database
+/// </summary>
 public partial class TerkDbContext : DbContext
 {
     public TerkDbContext()
     {
     }
 
-    public TerkDbContext(DbContextOptions<TerkDbContext> options)
-        : base(options)
+    public TerkDbContext(DbContextOptions<TerkDbContext> options) : base(options)
     {
     }
 
-    public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<Order> Orders { get; set; } = null!;
 
-    public virtual DbSet<OrderPosition> OrderPositions { get; set; }
+    public virtual DbSet<OrderPosition> OrderPositions { get; set; } = null!;
 
-    public virtual DbSet<Product> Products { get; set; }
+    public virtual DbSet<Product> Products { get; set; } = null!;
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<User> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

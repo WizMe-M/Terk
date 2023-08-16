@@ -1,27 +1,39 @@
 ﻿namespace Terk.DesktopClient.ViewModels;
 
+/// <summary>
+/// Represents ViewModel with authorized user's orders
+/// </summary>
 public partial class MyOrdersViewModel : ContentViewModel
 {
-    private readonly ApiRequester _apiRequester;
+    private readonly IApiClient _apiClient;
     private readonly PlaceNewOrderViewModel _placeNewOrderVm;
 
-    public MyOrdersViewModel(ApiRequester apiRequester, PlaceNewOrderViewModel placeNewOrderVm)
+    public MyOrdersViewModel(IApiClient apiClient, PlaceNewOrderViewModel placeNewOrderVm)
     {
-        _apiRequester = apiRequester;
+        _apiClient = apiClient;
         _placeNewOrderVm = placeNewOrderVm;
     }
 
+    /// <summary>
+    /// User's orders
+    /// </summary>
     public ObservableCollection<Order> Orders { get; } = new();
 
     public override Task InitAsync() => UploadOrders();
 
+    /// <summary>
+    /// Opens <see cref="PlaceNewOrderViewModel"/>
+    /// </summary>
     [RelayCommand]
     private void OpenNewOrder() => ChangeContent(_placeNewOrderVm);
 
+    /// <summary>
+    /// Downloads user's orders as text file
+    /// </summary>
     [RelayCommand]
     private async Task SaveFileWithOrders()
     {
-        var response = await _apiRequester.DownloadFileWithMyOrders();
+        var response = await _apiClient.DownloadMyOrdersAsync();
         if (response is { })
         {
             var dialog = new SaveFileDialog
@@ -34,7 +46,8 @@ public partial class MyOrdersViewModel : ContentViewModel
                 },
                 DefaultExtension = ".txt"
             };
-            var window = ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).MainWindow;
+            var window = ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!)
+                .MainWindow;
             var saveFilePath = await dialog.ShowAsync(window);
             if (saveFilePath is { })
             {
@@ -43,9 +56,12 @@ public partial class MyOrdersViewModel : ContentViewModel
         }
     }
 
+    /// <summary>
+    /// Refreshes user's orders with data from API
+    /// </summary>
     private async Task UploadOrders()
     {
-        var orders = await _apiRequester.GetMyOrdersAsync();
+        var orders = await _apiClient.GetMyOrdersAsync();
         Orders.Clear();
         Orders.AddRange(orders);
     }

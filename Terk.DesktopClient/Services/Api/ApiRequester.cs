@@ -1,6 +1,9 @@
 ﻿namespace Terk.DesktopClient.Services.Api;
 
-public class ApiRequester : IAuthorizingClient
+/// <summary>
+/// API HTTP client 
+/// </summary>
+public class ApiRequester : IApiClient
 {
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _options;
@@ -28,7 +31,7 @@ public class ApiRequester : IAuthorizingClient
         return true;
     }
 
-    public async Task<Product[]> GetProducts()
+    public async Task<Product[]> GetProductsAsync()
     {
         var products = await _httpClient.GetFromJsonAsync<Product[]>("api/products", _options);
         return products!;
@@ -40,11 +43,7 @@ public class ApiRequester : IAuthorizingClient
         return orders!;
     }
 
-    /// <summary>
-    /// Downloads text (.txt) file with user's orders
-    /// </summary>
-    /// <returns><see cref="FileResponse"/> either null (if response wasn't successful)</returns>
-    public async Task<FileResponse?> DownloadFileWithMyOrders()
+    public async Task<FileResponse?> DownloadMyOrdersAsync()
     {
         var response = await _httpClient.GetAsync("api/orders/my/file");
         if (!response.IsSuccessStatusCode ||
