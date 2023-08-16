@@ -22,7 +22,7 @@ public class ApiRequester : IAuthorizingClient
     {
         var response = await _httpClient.PostAsJsonAsync("api/auth", login, _options);
         if (!response.IsSuccessStatusCode) return false;
-        
+
         var (_, jwtToken) = (await response.Content.ReadFromJsonAsync<AuthResponse>())!;
         SetAuthorization(jwtToken);
         return true;
@@ -33,11 +33,27 @@ public class ApiRequester : IAuthorizingClient
         var products = await _httpClient.GetFromJsonAsync<Product[]>("api/products", _options);
         return products!;
     }
-    
+
     public async Task<Order[]> GetMyOrdersAsync()
     {
         var orders = await _httpClient.GetFromJsonAsync<Order[]>("api/orders/my", _options);
         return orders!;
+    }
+
+    /// <summary>
+    /// Downloads text (.txt) file with user's orders
+    /// </summary>
+    /// <returns><see cref="FileResponse"/> either null (if response wasn't successful)</returns>
+    public async Task<FileResponse?> DownloadFileWithMyOrders()
+    {
+        var response = await _httpClient.GetAsync("api/orders/my/file");
+        if (!response.IsSuccessStatusCode ||
+            !response.Content.Headers.TryGetValues("Content-Disposition", out var values)) return null;
+        
+        var disposition = ContentDispositionHeaderValue.Parse(values.First());
+        var fileName = disposition.FileNameStar!;
+        var bytes = await response.Content.ReadAsByteArrayAsync();
+        return new FileResponse(fileName, bytes);
     }
 
     public async Task<bool> CreateOrderAsync(NewOrder newOrder)

@@ -15,13 +15,38 @@ public partial class MyOrdersViewModel : ContentViewModel
 
     public override Task InitAsync() => UploadOrders();
 
+    [RelayCommand]
+    private void OpenNewOrder() => ChangeContent(_placeNewOrderVm);
+
+    [RelayCommand]
+    private async Task SaveFileWithOrders()
+    {
+        var response = await _apiRequester.DownloadFileWithMyOrders();
+        if (response is { })
+        {
+            var dialog = new SaveFileDialog
+            {
+                Title = "Сохранить файл с заказами",
+                InitialFileName = response.Name,
+                Filters = new List<FileDialogFilter>
+                {
+                    new() { Name = "Text file", Extensions = new List<string> { "txt" } }
+                },
+                DefaultExtension = ".txt"
+            };
+            var window = ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).MainWindow;
+            var saveFilePath = await dialog.ShowAsync(window);
+            if (saveFilePath is { })
+            {
+                await File.WriteAllBytesAsync(saveFilePath, response.Data);
+            }
+        }
+    }
+
     private async Task UploadOrders()
     {
         var orders = await _apiRequester.GetMyOrdersAsync();
         Orders.Clear();
         Orders.AddRange(orders);
     }
-
-    [RelayCommand]
-    private void OpenNewOrder() => ChangeContent(_placeNewOrderVm);
 }
