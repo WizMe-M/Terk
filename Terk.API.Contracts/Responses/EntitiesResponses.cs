@@ -1,7 +1,7 @@
 ﻿namespace Terk.API.Contracts.Responses;
 
 /// <summary>
-/// User's order
+/// Info about user's order
 /// </summary>
 /// <param name="Id">Order's id</param>
 /// <param name="CreatedDate">Date and time when order was crated</param>
@@ -20,7 +20,7 @@ public record Order(int Id, DateTime CreatedDate, Position[] Positions, decimal 
 public record Position(int Id, Product Product, byte Count, decimal Cost);
 
 /// <summary>
-/// Product in order
+/// Info about product
 /// </summary>
 /// <param name="Id">Product's id</param>
 /// <param name="Name">Product's name</param>

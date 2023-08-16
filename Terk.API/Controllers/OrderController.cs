@@ -5,10 +5,17 @@ using IoFile = System.IO.File;
 
 namespace Terk.API.Controllers;
 
+/// <summary>
+/// Controller that allows to interact with orders
+/// </summary>
 [Route("api/orders")]
 public class OrderController : DbController
 {
     private readonly ILogger<OrderController> _logger;
+
+    /// <summary>
+    /// Info about environment (is needed to get <see cref="IWebHostEnvironment.WebRootPath"/>)
+    /// </summary>
     private readonly IWebHostEnvironment _environment;
 
     public OrderController(TerkDbContext context, ILogger<OrderController> logger, IWebHostEnvironment environment) :
@@ -19,10 +26,10 @@ public class OrderController : DbController
     }
 
     /// <summary>
-    /// Requests user's orders
+    /// Receives user's orders
     /// </summary>
-    /// <param name="authorization">JWT Bearer authorization token</param>
-    /// <returns>Ok with array of <see cref="Order"/> either <see cref="ProblemDetails"/> with message</returns>
+    /// <param name="authorization">User's JWT bearer authorization token</param>
+    /// <returns>Ok with array of <see cref="Order"/> either <see cref="ProblemDetails"/> with error's message</returns>
     [HttpGet("my")]
     public async Task<IActionResult> GetMyOrders([FromHeader] string authorization)
     {
@@ -55,9 +62,16 @@ public class OrderController : DbController
         return Ok(orders);
     }
 
+    /// <summary>
+    /// Generates and sends info about orders as text file to user
+    /// </summary>
+    /// <param name="authorization">User's JWT bearer authorization token</param>
+    /// <returns>Ok with attachment (.txt file) either <see cref="ProblemDetails"/> with error message</returns>
     [HttpGet("my/file")]
     public async Task<IActionResult> DownloadMyOrders([FromHeader] string authorization)
     {
+        #region auth user and get his orders
+
         var id = authorization.ExtractId();
         if (id is null)
         {
@@ -77,6 +91,10 @@ public class OrderController : DbController
             return Problem("User not found", statusCode: StatusCodes.Status400BadRequest);
         }
 
+        #endregion
+
+        #region generate files' names and paths
+
         const string fileFolder = "files";
         var filesRootPath = Path.Join(_environment.WebRootPath, fileFolder);
         if (!Path.Exists(filesRootPath)) Directory.CreateDirectory(filesRootPath);
@@ -84,6 +102,10 @@ public class OrderController : DbController
         var serverFileName = $"{Guid.NewGuid().ToString()}.txt";
         var serverFilePath = Path.Join(filesRootPath, serverFileName);
         var clientFileName = $"{user.Login} {DateTime.Now}.txt";
+
+        #endregion
+
+        #region generate text to write in files
 
         var orders = user.Orders.OrderByDescending(order => order.CreatedDate).ToArray();
 
@@ -101,6 +123,8 @@ public class OrderController : DbController
 
             stringBuilder.AppendLine();
         }
+
+        #endregion
 
         var fileContent = stringBuilder.ToString();
         await IoFile.WriteAllTextAsync(serverFilePath, fileContent);
@@ -120,9 +144,9 @@ public class OrderController : DbController
     /// <summary>
     /// Creates new order for user
     /// </summary>
-    /// <param name="authorization">User's authorization token</param>
+    /// <param name="authorization">User's JWT bearer authorization token</param>
     /// <param name="newOrder">Data for new order</param>
-    /// <returns>Ok either <see cref="ProblemDetails"/></returns>
+    /// <returns>Ok either <see cref="ProblemDetails"/> with error message</returns>
     [HttpPost("new")]
     public async Task<IActionResult> CreateNewOrder([FromHeader] string authorization, NewOrder newOrder)
     {

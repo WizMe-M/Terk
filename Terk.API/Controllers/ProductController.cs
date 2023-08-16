@@ -2,6 +2,9 @@
 
 namespace Terk.API.Controllers;
 
+/// <summary>
+/// Controller that allows to interact with products
+/// </summary>
 [Route("api/products")]
 public class ProductController : DbController
 {
@@ -12,6 +15,11 @@ public class ProductController : DbController
         _logger = logger;
     }
 
+    /// <summary>
+    /// Receive all available products
+    /// </summary>
+    /// <param name="authorization">User's JWT bearer authorization token</param>
+    /// <returns>Ok with array of <see cref="Product"/> either <see cref="ProblemDetails"/> with error message</returns>
     [HttpGet]
     public async Task<IActionResult> GetProducts([FromHeader] string authorization)
     {
